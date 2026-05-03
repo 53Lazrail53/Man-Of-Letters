@@ -1,0 +1,27 @@
+{
+  "name": "man-of-letters",
+  "version": "1.0.0",
+  "description": "AI-based motivation letter generator web app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/53Lazrail53/Man-Of-Letters.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/53Lazrail53/Man-Of-Letters/issues"
+  },
+  "homepage": "https://github.com/53Lazrail53/Man-Of-Letters#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "openai": "^6.35.0"
+  }
+}

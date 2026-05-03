@@ -3,24 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <title>Man Of Letters</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .app {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    #chat {
+      height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 15px;
+      background: #fafafa;
+      margin-bottom: 15px;
+    }
+
+    .message {
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      max-width: 75%;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+
+    .user {
+      background: #d1e7ff;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .ai {
+      background: #eeeeee;
+      margin-right: auto;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #444;
+    }
+  </style>
 </head>
 <body>
-  <h1>Man Of Letters</h1>
-  <p>AI tabanlı motivasyon mektubu oluşturucu.</p>
+  <div class="app">
+    <h1>Man Of Letters</h1>
+    <p>AI arkadaşın: sohbet eder, nasihat verir, aşk tavsiyesi verir, fikir üretir.</p>
 
-  <textarea id="input" placeholder="Kendinden bahset..." rows="6" cols="50"></textarea>
-  <br><br>
+    <div id="chat">
+      <div class="message ai">Selam, ben Man Of Letters. Ne konuşuyoruz bugün?</div>
+    </div>
 
-  <button onclick="generateLetter()">Mektup Oluştur</button>
-
-  <h2>Sonuç:</h2>
-  <p id="result"></p>
+    <div class="input-area">
+      <input id="input" placeholder="Mesajını yaz..." onkeydown="if(event.key === 'Enter') askAI()">
+      <button onclick="askAI()">Gönder</button>
+    </div>
+  </div>
 
   <script>
-    function generateLetter() {
-      const text = document.getElementById("input").value;
-      document.getElementById("result").innerText =
-        "Motivasyon mektubu taslağın: " + text;
+    async function askAI() {
+      const input = document.getElementById("input");
+      const chat = document.getElementById("chat");
+      const text = input.value.trim();
+
+      if (!text) return;
+
+      chat.innerHTML += `<div class="message user">${text}</div>`;
+      input.value = "";
+
+      const loadingId = "loading-" + Date.now();
+      chat.innerHTML += `<div class="message ai" id="${loadingId}">Düşünüyorum...</div>`;
+      chat.scrollTop = chat.scrollHeight;
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ text })
+        });
+
+        const data = await response.json();
+        document.getElementById(loadingId).innerText = data.answer || data.error;
+      } catch (error) {
+        document.getElementById(loadingId).innerText = "Bağlantı hatası oluştu.";
+      }
+
+      chat.scrollTop = chat.scrollHeight;
     }
   </script>
 </body>
