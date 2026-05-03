@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Man Of Letters</title>
+</head>
+<body>
+  <h1>Man Of Letters</h1>
+  <p>AI tabanlı motivasyon mektubu oluşturucu.</p>
+
+  <textarea id="input" placeholder="Kendinden bahset..." rows="6" cols="50"></textarea>
+  <br><br>
+
+  <button onclick="generateLetter()">Mektup Oluştur</button>
+
+  <h2>Sonuç:</h2>
+  <p id="result"></p>
+
+  <script>
+    function generateLetter() {
+      const text = document.getElementById("input").value;
+      document.getElementById("result").innerText =
+        "Motivasyon mektubu taslağın: " + text;
+    }
+  </script>
+</body>
+</html>
